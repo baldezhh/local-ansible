@@ -1,0 +1,45 @@
+- name: Reset UFW
+  community.general.ufw: 
+    state: reset
+
+- name: Incoming deny
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+
+- name: Allow ports on lb
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: "{{item}}"
+  with_items: "{{firewall_allow_ports}}"
+  when: inventory_hostname in groups["lb"]
+
+- name: Allow ssh port on web servers
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: 22
+  when: inventory_hostname in groups["web"]
+
+- name: Allow 80 with lb ip on web servers
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: 80
+    src: "{{item}}"
+  with_items: "{% for host in groups.lb %}{{hostvars[host].ansible_host}}{% endfor %}"
+  when: inventory_hostname in groups["web"]
+
+- name: Allow 8080 with lb ip on web servers
+  community.general.ufw:
+    rule: allow
+    direction: in
+    port: 8080
+    src: "{{item}}"
+  with_items: "{% for host in groups.lb %}{{hostvars[host].ansible_host}}{% endfor %}"
+  when: inventory_hostname in groups["web"]
+
+- name: Enabled Firewall
+  community.general.ufw:
+    state: enabled

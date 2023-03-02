@@ -1,0 +1,13 @@
+---
+- name: Testing
+  hosts: lb
+  tasks:
+  - name: Run in Deb
+    debug:
+      msg: "{{hostvars[groups.lb[0]].ansible_distribution}}"
+    when: hostvars[groups.lb[0]].ansible_distribution == "Debian"
+    
+  - name: Run in not Deb
+    debug:
+      msg: "Hello World"
+    when: hostvars[groups.lb[0]].ansible_distribution != "Debian"

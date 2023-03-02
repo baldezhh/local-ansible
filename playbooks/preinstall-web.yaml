@@ -1,0 +1,8 @@
+---
+- hosts: web
+  name: Test
+  become: true
+  roles:
+    - preinstall-web
+  tags:
+    - preinstall-web

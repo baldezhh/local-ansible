@@ -1,0 +1,25 @@
+- name: Copy BE part
+  copy:
+    src: "{{checkout_dir}}/{{be_name}}/"
+    dest: "{{be_root}}"
+    remote_src: yes 
+    directory_mode: yes
+
+- name: Install python packages
+  pip: 
+    requirements: "{{be_root}}/requirements.txt"
+
+- name: Apply Backend Service template
+  template:
+    src: files/backend.service.j2
+    dest: /lib/systemd/system/backend.service
+
+- name: Restart systemd
+  systemd:
+    daemon_reload: true
+
+- name: Enable and start backend service
+  systemd:
+    name: backend
+    enabled: true
+    state: restarted

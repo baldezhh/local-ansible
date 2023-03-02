@@ -1,0 +1,16 @@
+- name: Generate .env for FE part
+  template:
+    src: files/.env.j2
+    dest: "{{checkout_dir}}/{{fe_name}}/.env"
+
+- name: Build FE part
+  shell: "npm install; npm run build"
+  args:
+    chdir: "{{checkout_dir}}/{{fe_name}}"
+
+- name: Copy FE part
+  copy:
+    src: "{{checkout_dir}}/{{fe_name}}/build/"
+    dest: "{{fe_root}}"
+    remote_src: yes
+    directory_mode: yes

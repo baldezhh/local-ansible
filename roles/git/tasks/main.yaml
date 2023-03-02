@@ -1,0 +1,5 @@
+- name: Git checkout
+  git:
+    repo: 'https://github.com/rhikura/internship.git'
+    dest: "{{checkout_dir}}"
+  register: dir

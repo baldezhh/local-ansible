@@ -1,0 +1,8 @@
+---
+- import_playbook: playbooks/deploy-common.yaml
+- import_playbook: playbooks/preinstall-web.yaml
+- import_playbook: playbooks/deploy-fe.yaml
+- import_playbook: playbooks/deploy-be.yaml
+- import_playbook: playbooks/deploy-nginx.yaml
+- import_playbook: playbooks/deploy-loadbalancer.yaml
+- import_playbook: playbooks/deploy-firewall.yaml
